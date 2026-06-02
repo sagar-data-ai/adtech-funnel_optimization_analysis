@@ -1,147 +1,171 @@
-# AdTech Clickstream Analytics & Fraud Detection
+# Multi-Channel Ad Spend Efficiency & Funnel Leakage Analysis
 
-This project simulates a real-world mobile advertising analytics workflow using a large-scale synthetic dataset.  
-The goal is to analyze advertising traffic, detect suspicious patterns, and evaluate campaign performance using data analytics techniques.
-
-Due to privacy and business restrictions, real advertising datasets are rarely publicly available. Therefore, this dataset was generated to mimic realistic AdTech data structures used by advertising technology platforms.
+This project analyzes advertising campaign performance across Facebook and Instagram using a large-scale Meta Ads dataset.  
+The goal is to identify funnel leakage points, evaluate ad format efficiency, segment audiences, and deliver data-backed recommendations to optimize ad spend and improve conversion rates.
 
 ---
 
-# Project Objectives
+## Project Objectives
 
-- Simulate a realistic advertising clickstream dataset
-- Perform data cleaning and preprocessing
-- Identify suspicious traffic patterns and potential fraud
-- Analyze campaign performance and conversion metrics
-- Practice relational data analysis using multiple tables
+- Analyze full-funnel ad performance from impressions to purchases
+- Identify where and why the conversion funnel is leaking
+- Segment audiences by demographics and geography for sharper targeting
+- Compare ad format performance (Video, Stories, Carousel, Image)
+- Deliver actionable budget optimization and scheduling recommendations
 
 ---
 
-# Dataset Description
+## Dataset Description
 
-The dataset consists of three relational tables representing a typical advertising analytics pipeline.
+The dataset consists of four relational tables representing a typical Meta advertising analytics pipeline.
 
-### 1. Clicks Table
-Contains click-level advertising traffic data.
+### 1. Campaigns Table
+Contains campaign-level strategy and budget information.
 
 Columns include:
-- click_id
 - campaign_id
-- publisher_id
+- name
+- start_date
+- end_date
+- duration_days
+- total_budget
+
+### 2. Ads Table
+Contains ad creative metadata and targeting configuration.
+
+Columns include:
+- ad_id
+- campaign_id
+- ad_platform
+- ad_type
+- target_gender
+- target_age_group
+- target_interests
+
+### 3. Users Table
+Stores demographic and interest information of users interacting with ads.
+
+Columns include:
 - user_id
-- device_type
+- user_gender
+- user_age
+- age_group
 - country
-- ip_address
-- timestamp
-- cost
+- location
+- interests
 
-### 2. Installs Table
-Records app installations associated with user clicks.
+### 4. Ad Events Table
+Captures every interaction event between a user and an ad.
 
-Columns:
-- install_id
-- click_id
-- install_timestamp
-
-### 3. Revenue Table
-Tracks post-install user revenue events.
-
-Columns:
+Columns include:
+- event_id
+- ad_id
 - user_id
-- revenue
-- event_timestamp
+- timestamp
+- day_of_week
+- time_of_day
+- event_type
 
 ---
 
-# Realistic Data Simulation
+## Dataset Scale
 
-To better represent real-world production data, several characteristics were intentionally introduced:
-
-- Fraud-like traffic patterns (bot clicks, click bursts)
-- Suspicious publisher activity
-- Missing values
-- Inconsistent formatting
-- Duplicate records
-- Outlier values
-
-These features allow the project to simulate common challenges faced by data analysts working with advertising data.
+- Ad Events: ~400,000 rows
+- Users: ~9,800 rows
+- Ads: 200 ads
+- Campaigns: 50 campaigns
+- Total Budget Tracked: ~$2.5M
 
 ---
 
-# Dataset Size
+## Project Workflow
 
-Approximate dataset scale used for analysis:
-
-- Clicks: ~5,000,000 rows
-- Installs: ~250,000 rows
-- Revenue: ~100,000 rows
-
-Due to GitHub file size limits, only a **sample dataset** is included in this repository.
-
----
-
-# Project Workflow
-
-The analytics pipeline followed in this project:
-
-Raw Data
+```
+Raw Data (4 Tables)
 ↓
-Data Cleaning
+Data Cleaning & Preprocessing
 ↓
 Exploratory Data Analysis (EDA)
 ↓
-Fraud Detection
+Funnel Analysis & Leakage Detection
 ↓
-Campaign Performance Analysis
+Audience Segmentation
+↓
+Ad Format & Time-Based Analysis
+↓
+Dashboard & Recommendations
+```
 
 ---
 
-# Key Analysis Areas
+## Key Analysis Areas
 
-The project focuses on identifying:
-
-- Suspicious IP addresses generating abnormal click volumes
-- Click burst patterns indicating bot activity
-- Publishers with unusually low conversion rates
-- Campaign performance metrics such as install rate and revenue contribution
-
----
-
-# Tools & Technologies
-
-- Python
-- Pandas
-- NumPy
-- Jupyter Notebook
-- SQL (for relational analysis)
-- Data Visualization tools (Power BI / Matplotlib / Seaborn)
+- **Funnel Leakage Detection** — Identified 11.79% CTR but only 0.60% purchase rate, exposing a critical conversion drop-off between clicks and purchases
+- **Audience Segmentation** — Segmented 9,800+ users by age, gender and geography to identify high-engagement segments
+- **Ad Format Performance** — Compared CTR and CVR across Video, Stories, Carousel and Image formats
+- **Time-Based Analysis** — Analyzed 400K+ events by time-of-day and day-of-week to identify peak engagement windows
+- **Budget Optimization** — Recommended reallocation of ad spend toward top-performing formats and geographies
 
 ---
 
-# Repository Structure
+## Key Metrics & Findings
+
+| Metric | Value |
+|---|---|
+| Total Impressions | 339,812 |
+| Total Clicks | 40,079 |
+| Total Purchases | 2,031 |
+| CTR | 11.79% |
+| Conversion Rate | 5.07% |
+| Purchase Rate | 0.60% |
+| Total Campaign Budget | $2.5M |
+
+---
+
+## Ad Format Performance
+
+| Ad Type | CTR | CVR |
+|---|---|---|
+| Video | 11.90% | 5.07% |
+| Stories | 11.73% | 5.34% |
+| Image | 11.88% | 4.67% |
+| Carousel | 11.72% | 5.13% |
+
+---
+
+## Tools & Technologies
+
+- Python (Pandas, Matplotlib, Seaborn)
+- SQL (MySQL)
+- Excel
+- Power BI
+
+---
 
 ## Repository Structure
 
 ```
-adtech-fraud-detection-analysis
+multi-channel-ad-spend-funnel-analysis
 │
 ├── data
-│   └── clicks_sample.csv
+│   └── sample_ad_events.csv
 │
 ├── notebooks
-│   ├── 01_data_generation.ipynb
-│   ├── 02_data_cleaning.ipynb
-│   ├── 03_fraud_detection.ipynb
-│   └── 04_campaign_analysis.ipynb
+│   ├── 01_data_cleaning.ipynb
+│   ├── 02_funnel_analysis.ipynb
+│   ├── 03_audience_segmentation.ipynb
+│   └── 04_ad_format_analysis.ipynb
 │
 ├── sql
 │   └── analysis_queries.sql
 │
 ├── dashboard
-│   └── dashboard_mockup.png
+│   └── ad_performance_dashboard.png
 │
-├── images
-│   └── project_pipeline.png
+├── docs
+│   ├── Business_Requirements_Document.md
+│   ├── Domain_Knowledge_Document.md
+│   └── Dashboard_Insights.md
 │
 ├── requirements.txt
 │
@@ -150,27 +174,18 @@ adtech-fraud-detection-analysis
 
 ---
 
-# Learning Outcomes
+## Recommendations
 
-Through this project, the following skills were practiced:
-
-- Large-scale data simulation
-- Data cleaning and preprocessing
-- Fraud detection techniques
-- Relational data analysis
-- Analytical problem solving in AdTech environments
+1. **Fix conversion funnel** — Retarget 40K+ users who clicked but did not purchase via optimized landing pages and stronger offers
+2. **Refine audience targeting** — Focus budget on 18–34 age segment which drives highest engagement
+3. **Reallocate ad budget** — Shift spend toward Video (highest CTR) and Stories (highest CVR)
+4. **Schedule ads smartly** — Weight budget toward afternoon and evening hours for peak engagement
+5. **Segment geographic strategy** — Treat high-volume markets (India, US) and high-value markets (Germany, UK) differently
 
 ---
 
-# Future Improvements
+## Author
 
-- Build an interactive dashboard for campaign analytics
-- Implement machine learning models for fraud detection
-- Perform deeper cohort and retention analysis
-
----
-
-# Author
-
-Sagar Kumar  
-Data Analytics & Data Science Enthusiast
+**Sagar Kumar**  
+Data Analyst | 2+ Years Experience  
+[LinkedIn](https://www.linkedin.com/in/datasagar) | [GitHub](https://github.com/sagar-data-ai)
